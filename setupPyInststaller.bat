@@ -1,2 +1,1 @@
-cd C:\Python\Works\ktlms
-pyinstaller KTLS.py -i icon.ico
+pyinstaller MAIN.py -i icon.ico

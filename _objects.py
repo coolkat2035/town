@@ -130,7 +130,7 @@ class Player(Object):
         self.sprite.ProcessInput(events, keys)
 
     def Update(self):
-        #print(self.x, self.y)
+        print(self.x + self.hitbox.oX, self.y + self.hitbox.oY)
         self.hitbox.rect = pygame.Rect(self.x + self.hitbox.oX, self.y + self.hitbox.oY, self.hitbox.w, self.hitbox.h)
         self.sprite.Update()
 

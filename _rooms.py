@@ -48,9 +48,10 @@ class Title(Room):
         screen.fill((255, 0, 0))
 
 class Game(Room):
-    def __init__(self, startPos, startD, size, spr, player:Player):
-        """Position (tuple) and direction (int) the character starts with. 
-        Has diff room sizes (tuple) depending on scrolling or not."""
+    def __init__(self, startPos, startD, size, spr, player:Player, objs = None):
+        """Position (tuple) the room starts with. 
+        Need to find ways to config starting player inforamtion.
+        Use json files?"""
         super().__init__()
 
         #Should probably haul these to player class idk, esp vel and count
@@ -83,18 +84,20 @@ class StaticRoom(Game):
     
 
 
-class HScrollRoom(Game):
-    #Long room, wip
-    def __init__(self, startPos, startD, length, spr, player, obj_gp = None):
-        super().__init__(startPos, startD, (length, self.WINDOW_SIZE[1]), spr, player)
+class ScrollRoom(Game):
+    #Possible to do both h and v?
+    #how to take hitbox into account too?
+    def __init__(self, startPos, startD, size, spr, player, obj_gp = None):
+        super().__init__(startPos, startD, size, spr, player)
         self.initX = startPos[0]
 
     def scrollScreen(self, dx):
         #move the objects too
         self.x += dx
+        self.y += 0
 
     def Update(self):
-        print(self.x, self.y)
+        #print(self.x, self.y)
         if self.player_info.x < 300 and self.x < 0:
             self.scrollScreen(5)
             self.player_info.x = 300
