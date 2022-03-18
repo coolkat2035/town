@@ -6,7 +6,7 @@ from _node import Node
 #how to set player starring position per room    
 
 class Hitbox(Node):
-    """Collision controller"""
+    #probably need relative position
     def __init__(self, name, offset:tuple, size:tuple):
         """The offset is a rectangle!!"""
         self.oX = offset[0]
@@ -20,7 +20,6 @@ class Hitbox(Node):
     #do update in player, easier to calc position
 
 class Sprite(Node):
-    """Animation controller"""
     def __init__(self, name, offset:tuple, startD:int, spr:spritesheet):
         self.name = name #whats the use of this tho
         self.oX = offset[0]
@@ -47,14 +46,7 @@ class Sprite(Node):
         self.sprite.curAnim = self.sprite.getAnimByKey(name)
 
     def ProcessInput(self, events, keys):
-        for e in events:
-            if e.type == pygame.KEYDOWN:
-                if e.key == pygame.K_z:
-                    #make checker box
-                    print("check")
-                    pass
-
-
+        #Basic controls
         if any(keys):
             #if held down and is in the window
             if keys[pygame.K_LEFT]:
@@ -85,32 +77,17 @@ class Sprite(Node):
         #I want to die
         self.curFrame = self.sprite.curAnim[(self.walk_count // (self.FPS//self.ANIM_FPS)) % 4]
 
-class Object(Node):
-    """A thing with a hitbox and a sprite."""
+
+class Player(Node):
     def __init__(self, name, startRect:tuple, spr:Sprite, hitbox:Hitbox):
         self.x = startRect[0]
         self.y = startRect[1]
         self.w = startRect[2]
         self.h = startRect[3]
-
-        self.name = name
+        self.vel = 5
 
         self.sprite = spr
         self.hitbox = hitbox        
-    
-    def Update(self):
-        self.hitbox.rect = pygame.Rect(self.x + self.hitbox.oX, self.y + self.hitbox.oY, self.hitbox.w, self.hitbox.h)
-        self.sprite.Update()
-
-    def Render(self, screen):   
-        screen.blit(self.sprite, (self.x + self.sprite.oX, self.y + self.sprite.oY))#spr
-        pygame.draw.rect(screen, (255,0,0), self.hitbox.rect, 2)#hitbox
-
-class Player(Object):
-    def __init__(self, name, startRect:tuple, spr:Sprite, hitbox:Hitbox):
-        super().__init__(name, startRect, spr, hitbox)
-
-        self.vel = 5
     
     def ProcessInput(self, events, keys):
         if any(keys):
@@ -128,13 +105,15 @@ class Player(Object):
                 self.y += self.vel
 
         self.sprite.ProcessInput(events, keys)
-
     def Update(self):
+<<<<<<< HEAD
         print(self.x + self.hitbox.oX, self.y + self.hitbox.oY)
+=======
+        print(self.x, self.y)
+>>>>>>> parent of 6b9fcd0 (now can do horizontal scrolling, yay)
         self.hitbox.rect = pygame.Rect(self.x + self.hitbox.oX, self.y + self.hitbox.oY, self.hitbox.w, self.hitbox.h)
         self.sprite.Update()
 
     def Render(self, screen):   
         screen.blit(self.sprite.curFrame, (self.x + self.sprite.oX, self.y + self.sprite.oY))#spr
         pygame.draw.rect(screen, (255,0,0), self.hitbox.rect, 2)
-

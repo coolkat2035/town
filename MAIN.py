@@ -1,16 +1,16 @@
-from _modules import *
+from modules import *
 
 #TODO: 
 
 #bg sprites? how to group them
 #switch rooms
 
+#hitbox
 #hitbox per room
 #animation fps
 
 #fix animation problem, anim counter doesnt increment [done]
 #add spritesheet system [done]
-#hitbox[done]
 
 root = Node()#change window size in node.py
 clock = pygame.time.Clock()
@@ -21,9 +21,13 @@ player = Player("me",
                 Hitbox("player", (0,90), (80,60)))
 #name, starting xywh, sprite(name, offset, sheet(id, file)), hitbox(name, offset, size)
 
+<<<<<<< HEAD
 yee = StaticRoom((0, 0), 1, "stuff/bg_gate.png", player)
 quack = ScrollRoom((0,0), 2, (2000,720), "stuff/bg_hscroll.png", player)
 bruh = ScrollRoom((0, -1480), 3, (1080,2200), "stuff/bg_vscroll.png", player)
+=======
+yee = StaticRoom((200, 200), 1, "stuff/bg_gate.png", player)
+>>>>>>> parent of 6b9fcd0 (now can do horizontal scrolling, yay)
 
 def run_game(fps, starting_scene:Room):
     global win
@@ -60,4 +64,4 @@ def run_game(fps, starting_scene:Room):
         clock.tick(fps)
 
 
-run_game(root.FPS, quack)
+run_game(root.FPS,yee)
