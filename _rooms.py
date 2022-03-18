@@ -73,9 +73,8 @@ class Game(Room):
         self.player_info.Update()
         
     def Render(self, screen):   
-        screen.blit(self.sprite, (0, 0))
+        screen.blit(self.sprite, (self.x, self.y))
         self.player_info.Render(screen)
-
 
 class StaticRoom(Game):
     #Same params except the size is fixed
@@ -86,13 +85,23 @@ class StaticRoom(Game):
 
 class HScrollRoom(Game):
     #Long room, wip
-    def __init__(self, startPos, startD, size):
-        super().__init__(startPos, startD, size)
+    def __init__(self, startPos, startD, length, spr, player, obj_gp = None):
+        super().__init__(startPos, startD, (length, self.WINDOW_SIZE[1]), spr, player)
+        self.initX = startPos[0]
+
+    def scrollScreen(self, dx):
+        #move the objects too
+        self.x += dx
 
     def Update(self):
-        pass
-        #scroll here?
-    
-    def Render(self, screen):
-        pass
+        print(self.x, self.y)
+        if self.player_info.x < 300 and self.x < 0:
+            self.scrollScreen(5)
+            self.player_info.x = 300
+
+        if self.player_info.x > 800 and self.x > self.initX:
+            self.scrollScreen(-5)
+            self.player_info.x = 800
+
+        self.player_info.Update()
 
