@@ -21,13 +21,9 @@ player = Player("me",
                 Hitbox("player", (0,90), (80,60)))
 #name, starting xywh, sprite(name, offset, sheet(id, file)), hitbox(name, offset, size)
 
-<<<<<<< HEAD
 yee = StaticRoom((0, 0), 1, "stuff/bg_gate.png", player)
-quack = ScrollRoom((0,0), 2, (2000,720), "stuff/bg_hscroll.png", player)
+quack = ScrollRoom((-920,0), 2, (2000,720), "stuff/bg_hscroll.png", player)
 bruh = ScrollRoom((0, -1480), 3, (1080,2200), "stuff/bg_vscroll.png", player)
-=======
-yee = StaticRoom((200, 200), 1, "stuff/bg_gate.png", player)
->>>>>>> parent of 6b9fcd0 (now can do horizontal scrolling, yay)
 
 def run_game(fps, starting_scene:Room):
     global win
@@ -64,4 +60,4 @@ def run_game(fps, starting_scene:Room):
         clock.tick(fps)
 
 
-run_game(root.FPS,yee)
+run_game(root.FPS,quack)

@@ -106,11 +106,7 @@ class Player(Node):
 
         self.sprite.ProcessInput(events, keys)
     def Update(self):
-<<<<<<< HEAD
         print(self.x + self.hitbox.oX, self.y + self.hitbox.oY)
-=======
-        print(self.x, self.y)
->>>>>>> parent of 6b9fcd0 (now can do horizontal scrolling, yay)
         self.hitbox.rect = pygame.Rect(self.x + self.hitbox.oX, self.y + self.hitbox.oY, self.hitbox.w, self.hitbox.h)
         self.sprite.Update()
 

@@ -85,7 +85,6 @@ class StaticRoom(Game):
     
 
 
-<<<<<<< HEAD
 class ScrollRoom(Game):
     #Possible to do both h and v?
     #how to take hitbox into account too?
@@ -109,17 +108,4 @@ class ScrollRoom(Game):
             self.player_info.x = 800
 
         self.player_info.Update()
-=======
-class HScrollRoom(Game):
-    #Long room, wip
-    def __init__(self, startPos, startD, size):
-        super().__init__(startPos, startD, size)
-
-    def Update(self):
-        pass
-        #scroll here?
-    
-    def Render(self, screen):
-        pass
->>>>>>> parent of 6b9fcd0 (now can do horizontal scrolling, yay)
 
