@@ -4,6 +4,7 @@ from modules import *
 
 #bg sprites? how to group them
 #switch rooms
+
 #hitbox
 #hitbox per room
 #animation fps
@@ -15,9 +16,10 @@ root = Node()#change window size in node.py
 clock = pygame.time.Clock()
 
 player = Player("me",
-                (0,0),
+                (0,0, 80, 150),
                 Sprite("player", (0,0), 0, spritesheet("player", "player.png")),
-                Hitbox("player",(0,0), (0,70), (80, 80)))
+                Hitbox("player", (0,90), (80,60)))
+#name, starting xywh, sprite(name, offset, sheet(id, file)), hitbox(name, offset, size)
 
 yee = StaticRoom((200, 200), 1, "stuff/bg_gate.png", player)
 
