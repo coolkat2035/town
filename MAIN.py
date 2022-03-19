@@ -1,16 +1,16 @@
-from modules import *
+from _modules import *
 
 #TODO: 
 
 #bg sprites? how to group them
 #switch rooms
 
-#hitbox
 #hitbox per room
 #animation fps
 
 #fix animation problem, anim counter doesnt increment [done]
 #add spritesheet system [done]
+#hitbox[done]
 
 root = Node()#change window size in node.py
 clock = pygame.time.Clock()

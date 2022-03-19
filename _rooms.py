@@ -74,9 +74,8 @@ class Game(Room):
         self.player_info.Update()
         
     def Render(self, screen):   
-        screen.blit(self.sprite, (0, 0))
+        screen.blit(self.sprite, (self.x, self.y))
         self.player_info.Render(screen)
-
 
 class StaticRoom(Game):
     #Same params except the size is fixed
