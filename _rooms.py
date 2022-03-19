@@ -2,9 +2,10 @@ import pygame, os
 import _spritesheet
 from _node import Node
 from _objects import *
+from PIL import Image
 
 #TODO: add spritesheet system
-#Might need to find a better place to manage files
+#Might need to find a better place to manage room data
 #switch rooms
 #hitbox
 #hitbox per room
@@ -48,7 +49,7 @@ class Title(Room):
         screen.fill((255, 0, 0))
 
 class Game(Room):
-    def __init__(self, startPos, startD, size, spr, player:Player, objs = None):
+    def __init__(self, startPos, startD, spr, player:Player, objs = None):
         """Position (tuple) the room starts with. 
         Need to find ways to config starting player inforamtion.
         Use json files?"""
@@ -62,9 +63,12 @@ class Game(Room):
         self.y = startPos[1]
         self.dir = startD
         self.vel = 5
-        self.w = size[0]
-        self.h = size[1]
+
+        with Image.open(spr) as spruh:
+            self.w, self.h = spruh.size
+            
         self.sprite = pygame.image.load(spr)
+
         self.player_info = player
 
     def ProcessInput(self, events, keys):
@@ -80,31 +84,45 @@ class Game(Room):
 class StaticRoom(Game):
     #Same params except the size is fixed
     def __init__(self, startPos, startD, spr, player):
-        super().__init__(startPos, startD, self.WINDOW_SIZE, spr, player)
+        super().__init__(startPos, startD, spr, player)
     
 
 
 class ScrollRoom(Game):
     #Possible to do both h and v?
     #how to take hitbox into account too?
-    def __init__(self, startPos, startD, size, spr, player, obj_gp = None):
-        super().__init__(startPos, startD, size, spr, player)
+    def __init__(self, startPos, startD, spr, player, obj_gp = None):
+        super().__init__(startPos, startD, spr, player)
         self.initX = startPos[0]
 
-    def scrollScreen(self, dx):
+    def scrollScreen(self, dx, dy):
         #move the objects too
         self.x += dx
-        self.y += 0
+        self.y += dy
 
     def Update(self):
         #print(self.x, self.y)
-        if self.player_info.x < 300 and self.x < 0:
-            self.scrollScreen(5)
-            self.player_info.x = 300
+        if (self.player_info.x + self.player_info.hitbox.oX < 300) and self.x < 0: #collision checked using hitbox ONLY
+            #camera to the left
+            self.scrollScreen(self.player_info.vel, 0)
+            self.player_info.x = 300 - self.player_info.hitbox.oX
 
-        if self.player_info.x > 800 and self.x > self.initX:
-            self.scrollScreen(-5)
-            self.player_info.x = 800
+        elif (self.player_info.x + self.player_info.hitbox.oX + self.player_info.hitbox.w > 800) and (self.x > self.WINDOW_SIZE[0] - self.w):
+            #right
+            self.scrollScreen(0 - self.player_info.vel, 0)
+            self.player_info.x = 800 - self.player_info.hitbox.oX - self.player_info.hitbox.w
+
+        if (self.player_info.y + self.player_info.hitbox.oY < 300) and self.y < 0:
+            #up
+            self.scrollScreen(0, self.player_info.vel)
+            self.player_info.y = 300 - self.player_info.hitbox.oY
+
+        elif (self.player_info.y + self.player_info.hitbox.oY > 500) and (self.y > self.WINDOW_SIZE[1] - self.h):
+            #down
+            self.scrollScreen(0, 0 - self.player_info.vel)
+            self.player_info.y = 500 - self.player_info.hitbox.oY
+
+        
 
         self.player_info.Update()
 

@@ -22,8 +22,9 @@ player = Player("me",
 #name, starting xywh, sprite(name, offset, sheet(id, file)), hitbox(name, offset, size)
 
 yee = StaticRoom((0, 0), 1, "stuff/bg_gate.png", player)
-quack = ScrollRoom((-920,0), 2, (2000,720), "stuff/bg_hscroll.png", player)
-bruh = ScrollRoom((0, -1480), 3, (1080,2200), "stuff/bg_vscroll.png", player)
+quack = ScrollRoom((-500,0), 2, "stuff/bg_hscroll.png", player)
+bruh = ScrollRoom((0, -1480), 3, "stuff/bg_vscroll.png", player)
+chung = ScrollRoom((-350, -215), 3, "stuff/bg_big.png", player)
 
 def run_game(fps, starting_scene:Room):
     global win
@@ -39,10 +40,9 @@ def run_game(fps, starting_scene:Room):
             if event.type == pygame.QUIT:
                 quit_attempt = True
             elif event.type == pygame.KEYDOWN:
-                alt_pressed = keys[pygame.K_LALT] or keys[pygame.K_RALT]
                 if event.key == pygame.K_ESCAPE:
                     quit_attempt = True
-                elif event.key == pygame.K_F4 and alt_pressed:
+                elif event.key == pygame.K_F4 and (keys[pygame.K_LALT] or keys[pygame.K_RALT]):
                     quit_attempt = True
             
             if quit_attempt:
@@ -60,4 +60,4 @@ def run_game(fps, starting_scene:Room):
         clock.tick(fps)
 
 
-run_game(root.FPS,quack)
+run_game(root.FPS,chung)
