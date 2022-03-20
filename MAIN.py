@@ -8,6 +8,8 @@ from _modules import *
 #hitbox per room
 #animation fps
 
+#add readme
+
 #fix animation problem, anim counter doesnt increment [done]
 #add spritesheet system [done]
 #hitbox[done]
@@ -17,8 +19,9 @@ clock = pygame.time.Clock()
 
 player = Player("me",
                 (0,0, 80, 150),
-                Sprite("player", (0,0), 0, spritesheet("player", "player.png")),
-                Hitbox("player", (0,90), (80,60)))
+                AnimSprite("player", (0,0), 0, spritesheet("player", "player.png")),
+                Hitbox("player", (0,90), (80,60)),
+                Checker("player", (0,0), (60,60)))
 #name, starting xywh, sprite(name, offset, sheet(id, file)), hitbox(name, offset, size)
 
 yee = StaticRoom((0, 0), 1, "stuff/bg_gate.png", player)
@@ -60,4 +63,4 @@ def run_game(fps, starting_scene:Room):
         clock.tick(fps)
 
 
-run_game(root.FPS,chung)
+run_game(root.FPS,yee)

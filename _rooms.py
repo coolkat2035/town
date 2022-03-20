@@ -4,13 +4,15 @@ from _node import Node
 from _objects import *
 from PIL import Image
 
-#TODO: add spritesheet system
-#Might need to find a better place to manage room data
+#TODO: 
+#add spritesheet system?
+#Might need to find a better place to manage room data (json?)
 #switch rooms
 #hitbox
 #hitbox per room
 #find somewhere else to place the player intop the roompesd
 
+#scrolling [done]
 
 class Room(Node):
     def __init__(self):
@@ -66,7 +68,7 @@ class Game(Room):
 
         with Image.open(spr) as spruh:
             self.w, self.h = spruh.size
-            
+
         self.sprite = pygame.image.load(spr)
 
         self.player_info = player
@@ -102,27 +104,25 @@ class ScrollRoom(Game):
 
     def Update(self):
         #print(self.x, self.y)
-        if (self.player_info.x + self.player_info.hitbox.oX < 300) and self.x < 0: #collision checked using hitbox ONLY
+        if (self.player_info.x + self.player_info.hitbox.oX < 432) and self.x < 0: #collision checked using hitbox ONLY
             #camera to the left
             self.scrollScreen(self.player_info.vel, 0)
-            self.player_info.x = 300 - self.player_info.hitbox.oX
+            self.player_info.x = 432 - self.player_info.hitbox.oX
 
-        elif (self.player_info.x + self.player_info.hitbox.oX + self.player_info.hitbox.w > 800) and (self.x > self.WINDOW_SIZE[0] - self.w):
+        elif (self.player_info.x + self.player_info.hitbox.oX + self.player_info.hitbox.w > 648) and (self.x > self.WINDOW_SIZE[0] - self.w):
             #right
             self.scrollScreen(0 - self.player_info.vel, 0)
-            self.player_info.x = 800 - self.player_info.hitbox.oX - self.player_info.hitbox.w
+            self.player_info.x = 648 - self.player_info.hitbox.oX - self.player_info.hitbox.w
 
-        if (self.player_info.y + self.player_info.hitbox.oY < 300) and self.y < 0:
+        if (self.player_info.y + self.player_info.hitbox.oY < 288) and self.y < 0:
             #up
             self.scrollScreen(0, self.player_info.vel)
-            self.player_info.y = 300 - self.player_info.hitbox.oY
+            self.player_info.y = 288 - self.player_info.hitbox.oY
 
-        elif (self.player_info.y + self.player_info.hitbox.oY > 500) and (self.y > self.WINDOW_SIZE[1] - self.h):
+        elif (self.player_info.y + self.player_info.hitbox.oY > 432) and (self.y > self.WINDOW_SIZE[1] - self.h):
             #down
             self.scrollScreen(0, 0 - self.player_info.vel)
-            self.player_info.y = 500 - self.player_info.hitbox.oY
-
-        
+            self.player_info.y = 432 - self.player_info.hitbox.oY
 
         self.player_info.Update()
 

@@ -1,3 +1,5 @@
+#I'm the root of everything(oh)
+
 import pygame
 pygame.init()
 
