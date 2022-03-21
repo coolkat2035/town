@@ -1,8 +1,9 @@
 import pygame, os
-import _spritesheet
 from _node import Node
-from _objects import *
+from _basicObjects import *
+from _advancedObjects import *
 from PIL import Image
+from _player import *
 
 #TODO: 
 #add spritesheet system?
@@ -51,19 +52,17 @@ class Title(Room):
         screen.fill((255, 0, 0))
 
 class Game(Room):
-    def __init__(self, startPos, startD, spr, player:Player, objs = None):
+    def __init__(self, startPos, spr, player:Player, player_startPos:tuple, player_startD:int, objs = None):
         """Position (tuple) the room starts with. 
         Need to find ways to config starting player inforamtion.
         Use json files?"""
         super().__init__()
 
-        #Should probably haul these to player class idk, esp vel and count
         #Add exit points? position, size, destination (prob need a function for that)
         #player's movable bound too
         
         self.x = startPos[0]
         self.y = startPos[1]
-        self.dir = startD
         self.vel = 5
 
         with Image.open(spr) as spruh:
@@ -72,6 +71,11 @@ class Game(Room):
         self.sprite = pygame.image.load(spr)
 
         self.player_info = player
+        self.player_info.x = player_startPos[0]
+        self.player_info.y = player_startPos[1]
+        self.player_info.sprite.dir = player_startD
+
+        self.obj_info = objs
 
     def ProcessInput(self, events, keys):
         self.player_info.ProcessInput(events, keys)
@@ -81,20 +85,22 @@ class Game(Room):
         
     def Render(self, screen):   
         screen.blit(self.sprite, (self.x, self.y))
+        if self.obj_info != None:
+            for o in self.obj_info:
+                o.Render(screen)
         self.player_info.Render(screen)
 
 class StaticRoom(Game):
     #Same params except the size is fixed
-    def __init__(self, startPos, startD, spr, player):
-        super().__init__(startPos, startD, spr, player)
+    #Kinda useless tbh
+    def __init__(self, startPos, spr, player, player_startPos, player_startD, objs = None):
+        super().__init__(startPos,spr, player, player_startPos, player_startD, objs)
     
-
-
 class ScrollRoom(Game):
     #Possible to do both h and v?
     #how to take hitbox into account too?
-    def __init__(self, startPos, startD, spr, player, obj_gp = None):
-        super().__init__(startPos, startD, spr, player)
+    def __init__(self, startPos, spr, player, player_startPos, player_startD, objs = None):
+        super().__init__(startPos, spr, player, player_startPos, player_startD, objs)
         self.initX = startPos[0]
 
     def scrollScreen(self, dx, dy):

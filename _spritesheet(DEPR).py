@@ -11,14 +11,22 @@ import os
 
 class AnimNotFoundError(Exception):
     pass
-class spritesheet(pygame.sprite.Sprite):
-    def __init__(self, charname:str, filename:str):
+
+class AnimSprite(pygame.sprite.Sprite):
+    """An animation controller with multiple """
+    def __init__(self, charname:str, filename:str, fps):
         try:
-            self.filename = f"stuff/{filename}"
+            self.filename = filename
+            self.fps = fps
+
             self.image = pygame.image.load(self.filename) #image sprite sheet
             self.charname = charname #character name (name_walk0001.png)
             self.sheet = None #json sprite sheet
+
             self.curAnim = [] #current pygame surface obj list
+            self.curAnimName = None #string
+            self.frame_count = 0
+            self.curFrame = None #surface object to blit lol
 
             with open(f"{os.path.splitext(self.filename)[0]}.json",'r', encoding = 'utf-8-sig') as s:
                 self.sheet = json.loads(s.read())
@@ -46,7 +54,6 @@ class spritesheet(pygame.sprite.Sprite):
         "returns a list of surface objects made by image_at, sets my rectangle to frame size"
         _wrong_counter = 0
         self.curAnim = [] #clear everything
-        
 
         for frame in self.sheet["frames"]:
             #very efficient way to check if animation exists
@@ -74,6 +81,10 @@ class spritesheet(pygame.sprite.Sprite):
                                 self.sheet["frames"][f"{self.charname}_{key}0000"]["spriteSourceSize"]['h'])
 
         return self.curAnim
+
+    def setAnim(self, name):
+        self.curAnim = self.getAnimByKey(name)
+        self.curAnimName = name
 
 if __name__ == "__main__":
     if True:

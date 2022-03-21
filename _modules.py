@@ -2,8 +2,9 @@
 
 from _rooms import *
 from _node import Node
-from _objects import *
-from _spritesheet import spritesheet
+from _basicObjects import *
+from _advancedObjects import *
+from _player import *
 
 #What external libraries YOU need:
 #pygame
