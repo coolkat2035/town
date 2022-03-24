@@ -1,3 +1,4 @@
+"""Building blocks"""
 import pygame, os
 from _node import Node
 from _basicObjects import *
@@ -6,13 +7,16 @@ from PIL import Image
 from _player import *
 
 #TODO: 
-#add spritesheet system?
+
 #Might need to find a better place to manage room data (json?)
 #switch rooms
-#hitbox
-#hitbox per room
-#find somewhere else to place the player intop the roompesd
 
+#layering: move player in front of the object if its Y is larger than its
+#hitbox per room
+
+#debug mode: add groups to sprite and hitbox seperately
+#find somewhere else to place the player intop the room [done]
+#add spritesheet system? [done]
 #scrolling [done]
 
 class Room(Node):
@@ -52,7 +56,7 @@ class Title(Room):
         screen.fill((255, 0, 0))
 
 class Game(Room):
-    def __init__(self, startPos, spr, player:Player, player_startPos:tuple, player_startD:int, objs = None):
+    def __init__(self, startPos, spr, player:Player, player_startPos:tuple, player_startD:int, objs:tuple[Object] = None):
         """Position (tuple) the room starts with. 
         Need to find ways to config starting player inforamtion.
         Use json files?"""
@@ -71,15 +75,15 @@ class Game(Room):
         self.sprite = pygame.image.load(spr)
 
         self.player_info = player
-        self.player_info.x = player_startPos[0]
-        self.player_info.y = player_startPos[1]
+        self.player_info.hitbox.rect.x = player_startPos[0]
+        self.player_info.hitbox.rect.y = player_startPos[1]
         self.player_info.sprite.dir = player_startD
 
         self.obj_info = objs
 
     def ProcessInput(self, events, keys):
-        self.player_info.ProcessInput(events, keys)
-    
+        self.player_info.ProcessInput(events, keys, self.obj_info)
+
     def Update(self):
         self.player_info.Update()
         
@@ -87,7 +91,7 @@ class Game(Room):
         screen.blit(self.sprite, (self.x, self.y))
         if self.obj_info != None:
             for o in self.obj_info:
-                o.Render(screen)
+                o.Render(screen) 
         self.player_info.Render(screen)
 
 class StaticRoom(Game):

@@ -7,7 +7,7 @@ import pygame
 #how to set player starring position per room
 #dialogue box? how to make interactables
 
-#add placeholder greenbox if sprite is none: how to decide size?
+#add placeholder greenbox if sprite is none: how to decide size? [done]
 
 #add testing furniture: clock, table, bed, desk (your room)
 
@@ -20,30 +20,31 @@ class AnimNotFoundError(Exception):
 
 class Hitbox(Node):
     """Collision controller"""
-    def __init__(self, offset, size):
+    def __init__(self, offset, size, tang:bool):
         """name?, offset from the player object, width and height"""
         self.oX = offset[0]
         self.oY = offset[1]
         self.w = size[0]
         self.h = size[1]
         self.rect = pygame.Rect(self.oX, self.oY, size[0], size[1]) #the object, if anyone wants
-        
+        self.isTangible = tang
+
     def Render(self, screen):
         pygame.draw.rect(screen, (255,0,0), self.rect, 2)
 
     def isCollide(self, other):
         return pygame.Rect.colliderect(self.rect, other.rect)
 
-    def __repr__(self):
+    '''def __repr__(self):
         return str(self.__dict__)
-        return f"{self.name}, at ({self.oX}, {self.oY}, {self.w}, {self.h})"
+        return f"{self.name}, at ({self.oX}, {self.oY}, {self.w}, {self.h})"'''
     #do update in player, easier to calc position
 
-class StaticSprite(pygame.sprite.Sprite):
-    WINDOW_SIZE = (1080,720) #lol
+class StaticSprite(pygame.sprite.Sprite, Node):
     def __init__(self, spr:str, group = None):
         """Makes a sprite from the given filename"""
         super().__init__()
+
         #placeholder setup, a green rectangle if there is no image
         if spr == None:
             self.image = pygame.Surface(self.WINDOW_SIZE)# should be cropped in obj class

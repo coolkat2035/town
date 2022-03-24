@@ -4,6 +4,7 @@ from _modules import *
 
 #bg sprites? how to group them
 #switch rooms
+#sprites infront of player (atmosphere, rain, fog...)
 
 #hitbox per room [ongoing]
 #animation fps
@@ -19,18 +20,19 @@ clock = pygame.time.Clock()
 
 player = Player(
     "me",
-    (0,0, 80, 150),
+    pygame.Rect(0,0, 80, 150),
     AnimSprite("player", "stuff/player.png", 4),
-    Hitbox((0,90), (80,60)),
+    Hitbox((0,90), (80,60), True),
     Checker((80,60))
     )
 
 objects = (
-    Object("wall1", (0,0,1080,220), StaticSprite(None), Hitbox((0,150), (1080, 70))),
-    Object("bed1", (0,140,205,430), StaticSprite("stuff/obj_bed.png"), Hitbox((0,0), (205,430)))
+    Object("wall1", pygame.Rect(0,0,1080,220), StaticSprite(None), Hitbox((0,150), (1080, 70), True)),
+    Object("bed1", pygame.Rect(0,140,205,430), StaticSprite("stuff/obj_bed.png"), Hitbox((0,0), (205,430), True)),
+    Object("thing", pygame.Rect(800,500, 100, 100), StaticSprite(None), Hitbox((0,0), (100,100), True))
     )
 
-yee = StaticRoom((0, 0),"stuff/bg_normal.png", player, (540, 360), 3, objects)
+yee = StaticRoom((0, 0),"stuff/bg_normal.png", player, (800, 660), 3, objects)
 
 long = ScrollRoom((-500,0), "stuff/bg_hscroll.png", player, (200, 300), 0)
 tall = ScrollRoom((0, -1480), "stuff/bg_vscroll.png", player, (540, 600), 2)
